@@ -74,37 +74,40 @@ void start_dict (dictionary *dict_pointer) {
 }
 
 void lower_case (unsigned char *value) {
-    if (((*value) >= 'A' && (*value) <= 'Z')) {
-        value -= 32;
-    } else if ((*value) >= 'À' && (*value) <= 'Ü') {
-        value += 32;
+    if ( ((*value) >= 'A' && (*value) <= 'Z') ||
+        ((*value) >= 'À' && (*value) <= 'Ü') ) {
+
+        (*value) += 32;
     }
 }
 
 int is_character (unsigned char value) {
+    lower_case(&value);
     if ((value >= 'a' && value <= 'z') ||
         (value == 'ç') ||
-        (value >= 'à' && value <= 'ü')) {
+        (value >= 192 && value <= 252)) {
+
         return 1;
     } 
 
     return 0;
 }
 
-int iterativeBsearch(dictionary *dict_pointer, unsigned char *str) {
-   int start = 0;
-   int end = dict_pointer-1;
-   while(start<=end) {
-      int mid = (start+end)/2;
-      if( strcmp(dict_pointer->dict[mid], str)) {
-         return mid;
-      } else if(  ) {
-         end = mid-1;
-      } else {
-         start = mid+1;
-      }
-   }
-   return -1;
+int dict_binary_search(dictionary *dict_pointer, unsigned char *str) {
+    int start = 0;
+    int end = dict_pointer->lines-1;
+
+    while( start <= end ) {
+        int mid = (start + end)/2;
+        if ( strcmp((char*)str, (char*)dict_pointer->dict[mid]) == 0) {
+            return mid;
+        } else if( strcmp((char*)str, (char*)dict_pointer->dict[mid]) < 0) {
+            end = mid-1;
+        } else {
+            start = mid+1;
+        }
+    }
+   return 0;
 }
 
 int main () {
@@ -118,26 +121,29 @@ int main () {
 
 
     unsigned char c;
-    while ( (c = getchar()) != EOF ) {
-        lower_case(&c);
-        while ( ! is_character(c) && (c = getchar() != EOF )) {
+    while ( ((c = getchar()) != 255) ) {
+
+        while ( !(is_character(c)) && (c != 255) ) {  
             printf("%c", c);
-            scanf("%c", &c);
+            c = getchar();
         }
 
-        char *str = "";
-        while ( is_character(c) && ! (c = getchar() != EOF)) {
-            str = str + c;
+        unsigned char str[20] = {0};
+        int i = 0;
+        while ( (is_character(c)) && (c != 255)) {
+            lower_case(&c);
+            str[i] = c;
+            i++;
             c = getchar();
         } 
-
-        if (str) {
-            if () {
-                printf("%s", str);
-            } else {
-                printf("[%s]", str);
-            }            
+        
+        
+        if (dict_binary_search(&pt_dict, str) && c != 255) {
+            printf("%s" , str);
+        } else {
+            printf("[%s]", str);
         } 
+        
     }
 
     return 1;

@@ -18,13 +18,13 @@ void open_file (FILE **file_pointer) {
 }
 
 void dict_allocation (dictionary *dict_pointer) {
-    dict_pointer->dict = (unsigned char **)malloc(10000 * sizeof(unsigned char *));
+    dict_pointer->dict = (unsigned char **)malloc(20000 * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
         printf("Error: couldn't allocate memory.");
         exit(2);
     }
     int i;
-    for (i = 0; i < 10000; i++) {
+    for (i = 0; i < 20000; i++) {
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
             printf("Error: couldn't allocate memory.");
@@ -34,13 +34,13 @@ void dict_allocation (dictionary *dict_pointer) {
 }
 
 void dict_reallocation (dictionary *dict_pointer) {
-    dict_pointer->dict = realloc(dict_pointer->dict,  (10000 + dict_pointer->lines) * sizeof(unsigned char *));
+    dict_pointer->dict = realloc(dict_pointer->dict,  (20000 + dict_pointer->lines) * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
         printf("Error: couldn't allocate memory.");
         exit(2);
     }
     int i;
-    for (i = dict_pointer->lines; i < (10000 + dict_pointer->lines); i++) {
+    for (i = dict_pointer->lines; i < (20000 + dict_pointer->lines); i++) {
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
             printf("Error: couldn't allocate memory.");
@@ -56,7 +56,7 @@ void load_dict (FILE **file_pointer, dictionary *dict_pointer) {
         
         dict_pointer->lines++;
     
-        if ( dict_pointer->lines % 9999 == 0) {
+        if ( dict_pointer->lines % 19999 == 0) {
             dict_reallocation(dict_pointer);
         }
     
@@ -71,8 +71,8 @@ void start_dict (dictionary *dict_pointer) {
 }
 
 unsigned char lower_case (unsigned char value) {
-    if ( (value >= 'A' && value <= 'Z') ||
-        (value >= 'À' && value <= 'Ü') ) {
+    if ( (value >= 65 && value <= 90) ||
+        (value >= 192 && value <= 220) ) {
 
         value += 32;
     }
@@ -83,8 +83,8 @@ unsigned char lower_case (unsigned char value) {
 
 int is_character (unsigned char value) {
     value = lower_case(value);
-    if ((value >= 'a' && value <= 'z') ||
-        (value == 'ç') ||
+    if ((value >=  97 && value <= 122) ||
+        (value == 231) ||
         (value >= 192 && value <= 252)) {
 
         return 1;
@@ -98,7 +98,7 @@ int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int tam) {
     int end = dict_pointer->lines-1;
 
     int i;
-    unsigned char tmp[50];
+    unsigned char tmp[50] = {0};
     for (i = 0; i <= tam; i++) {
         tmp[i] = lower_case(str[i]);
     }
@@ -143,7 +143,7 @@ int main () {
             c = getchar();
         }
 
-        if (dict_binary_search(&pt_dict, str, tam) && c != 255) {
+        if (dict_binary_search(&pt_dict, str, tam) || (c == 255)) {
             printf("%s" , str);
         } else {
             printf("[%s]", str);

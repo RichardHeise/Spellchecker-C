@@ -12,7 +12,7 @@ void open_file (FILE **file_pointer) {
 
     if (!(*file_pointer)) {
         printf("Error: couldn't open file.");
-        exit(1);
+        exit(-1);
     }
 }
 
@@ -22,7 +22,7 @@ void dict_allocation (dictionary *dict_pointer) {
     dict_pointer->dict = (unsigned char **)malloc(20000 * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
         printf("Error: couldn't allocate memory.");
-        exit(2);
+        exit(-2);
     }
 
     int i;
@@ -33,7 +33,7 @@ void dict_allocation (dictionary *dict_pointer) {
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
             printf("Error: couldn't allocate memory.");
-            exit(2);
+            exit(-2);
         }
     }
 }
@@ -44,7 +44,7 @@ void dict_reallocation (dictionary *dict_pointer) {
     dict_pointer->dict = realloc(dict_pointer->dict, (20000 + dict_pointer->lines) * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
         printf("Error: couldn't allocate memory.");
-        exit(2);
+        exit(-2);
     }
 
     int i;
@@ -52,35 +52,9 @@ void dict_reallocation (dictionary *dict_pointer) {
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
             printf("Error: couldn't allocate memory.");
-            exit(2);
+            exit(-2);
         }
     }
-}
-
-void load_dict (FILE **file_pointer, dictionary *dict_pointer) {
-
-    int i;
-    for (i = 0; ! feof((*file_pointer)); i++ ) {
-
-        // Copy each word from the file dict into the program dict
-        fscanf((*file_pointer), "%s", dict_pointer->dict[i]);
-        
-        dict_pointer->lines++;
-    
-        // When it's needed the amount of lines increases
-        if ( dict_pointer->lines % 19999 == 0) {
-            dict_reallocation(dict_pointer);
-        }
-    
-    }
-
-    // Closes file for good.
-    fclose((*file_pointer));
-}
-
-void start_dict (dictionary *dict_pointer) {
-    dict_pointer->lines = 0;
-    dict_allocation(dict_pointer);
 }
 
 unsigned char lower_case (unsigned char value) {
@@ -91,9 +65,56 @@ unsigned char lower_case (unsigned char value) {
 
         value += 32;
     }
-
+    // if the reader found this obscure,
+    // have a look at the ISO table mentioned
+    
     return value;
 
+}
+
+void lower_string (unsigned char **value) {
+    int i;
+    for (i = 0; (*value)[i] != '\0'; i++) {
+        (*value)[i] = lower_case((*value)[i]);
+    }
+    return;
+}
+
+int compare_strs (const void* str_a, const void* str_b ) {
+    const unsigned char *pointer_a = *(const unsigned char**)str_a;
+    const unsigned char *pointer_b = *(const unsigned char**)str_b;
+
+    return strcmp(pointer_a,pointer_b);
+}
+
+void load_dict (FILE **file_pointer, dictionary *dict_pointer) {
+
+    int i;
+    for (i = 0; ! feof((*file_pointer)); i++ ) {
+
+        // Copy each word from the file dict into the program dict
+        fscanf((*file_pointer), "%s", dict_pointer->dict[i]);
+        lower_string(&dict_pointer->dict[i]);
+
+        dict_pointer->lines++;
+
+        // When it's needed the amount of lines increases
+        if ( dict_pointer->lines % 19999 == 0) {
+            dict_reallocation(dict_pointer);
+        }
+    
+    }
+
+    // sorts the program dict 
+    qsort(dict_pointer->dict, dict_pointer->lines, sizeof(unsigned char *), compare_strs);
+
+    // Closes file for good.
+    fclose((*file_pointer));
+}
+
+void start_dict (dictionary *dict_pointer) {
+    dict_pointer->lines = 0;
+    dict_allocation(dict_pointer);
 }
 
 int is_character (unsigned char value) {
@@ -104,6 +125,8 @@ int is_character (unsigned char value) {
 
         return 1;
     } 
+    // if the reader found this obscure,
+    // have a look at the ISO table mentioned
 
     return 0;
 }

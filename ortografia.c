@@ -17,7 +17,7 @@ int main () {
     load_dict(&arq, &pt_dict);
   
     unsigned char c;
-    while ( ((c = getchar()) != 255) ) {
+    while ( ((c = getchar()) != 255 ) ){
 
         while ( !(is_character(c)) && (c != 255) ) {  
             printf("%c", c);

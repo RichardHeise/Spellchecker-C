@@ -56,14 +56,14 @@ void start_dict (dictionary *dict_pointer);
 
 /**
  * Funtion to transform a char into a lower case char
- * It receives a value passed by copy (value).
+ * It receives a value by copy (value).
  * Returns a lower case char.
  */
 unsigned char lower_case (unsigned char value);
 
 /**
  * Funtion to check if a value is a char.
- * It receives a value passed by copy (value).
+ * It receives a value by copy (value).
  * Returns 1 if value is a char, 0 otherwise.
  */
 int is_character (unsigned char value);
@@ -75,3 +75,17 @@ int is_character (unsigned char value);
  * Third param is the string's size by copy.
  */
 int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int tam);
+
+/**
+ * Function to lower case a string
+ * Essentially it's the lower_case() function
+ * applied in every element of the unsgined char array.
+ * Receives a unsigned char pointer.
+ */
+void lower_string (unsigned char **value);
+
+/**
+ * Function to compare strings used in C qsort() built-in function.
+ * Receives two strings to be compared.
+ */
+int compare_strs (const void* str_a, const void* str_b);

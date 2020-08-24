@@ -80,9 +80,9 @@ void lower_string (unsigned char **value) {
     return;
 }
 
-int compare_strs (const void* str_a, const void* str_b ) {
-    const unsigned char *pointer_a = *(const unsigned char**)str_a;
-    const unsigned char *pointer_b = *(const unsigned char**)str_b;
+static int compare_strs (const void* str_a, const void* str_b ) {
+    const char *pointer_a = *(const char**)str_a;
+    const char *pointer_b = *(const char**)str_b;
 
     return strcmp(pointer_a,pointer_b);
 }

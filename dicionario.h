@@ -8,6 +8,9 @@
 #include <locale.h>
 #include <stdio.h>
 
+#ifndef _dicionario_
+#define _dicionario_
+
 #define BRAZILIAN_DICT_ABSOLUTE_PATH "/usr/share/dict/brazilian"
 
 /*
@@ -84,8 +87,4 @@ int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int tam);
  */
 void lower_string (unsigned char **value);
 
-/**
- * Function to compare strings used in C qsort() built-in function.
- * Receives two strings to be compared.
- */
-int compare_strs (const void* str_a, const void* str_b);
+#endif

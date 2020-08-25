@@ -18,15 +18,15 @@ void open_file (FILE **file_pointer) {
 
 void dict_allocation (dictionary *dict_pointer) {
 
-    // Allocates 20000 lines.
-    dict_pointer->dict = (unsigned char **)malloc(20000 * sizeof(unsigned char *));
+    // Allocates a defined amount of lines lines.
+    dict_pointer->dict = (unsigned char **)malloc(ALLOCATION_AMOUNT * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
         printf("Error: couldn't allocate memory.");
         exit(-2);
     }
 
     int i;
-    for (i = 0; i < 20000; i++) {
+    for (i = 0; i < ALLOCATION_AMOUNT; i++) {
         // Allocates only the first element of each string
         // C can deal with string sizes alone
 
@@ -41,14 +41,14 @@ void dict_allocation (dictionary *dict_pointer) {
 void dict_reallocation (dictionary *dict_pointer) {
 
     // Increases the maximum amount of lines by 20000
-    dict_pointer->dict = realloc(dict_pointer->dict, (20000 + dict_pointer->lines) * sizeof(unsigned char *));
+    dict_pointer->dict = realloc(dict_pointer->dict, (REALLOCATION_AMOUNT + dict_pointer->lines) * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
         printf("Error: couldn't allocate memory.");
         exit(-2);
     }
 
     int i;
-    for (i = dict_pointer->lines; i < (20000 + dict_pointer->lines); i++) {
+    for (i = dict_pointer->lines; i < (REALLOCATION_AMOUNT + dict_pointer->lines); i++) {
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
             printf("Error: couldn't allocate memory.");
@@ -131,7 +131,7 @@ int is_character (unsigned char value) {
     return 0;
 }
 
-int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int tam) {
+int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int s_size) {
     int start = 0;
     int end = dict_pointer->lines-1;
 
@@ -140,7 +140,7 @@ int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int tam) {
     unsigned char tmp[50] = {0};
 
     // lower cases the temporary buffer so search can be done
-    for (i = 0; i <= tam; i++) {
+    for (i = 0; i <= s_size; i++) {
         tmp[i] = lower_case(str[i]);
     }
 

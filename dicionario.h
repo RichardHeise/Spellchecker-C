@@ -11,7 +11,17 @@
 #ifndef _dicionario_
 #define _dicionario_
 
+/** Path to the system dictionary to be used as the main dict. */
 #define BRAZILIAN_DICT_ABSOLUTE_PATH "/usr/share/dict/brazilian"
+
+/** Amount of lines to be allocate by malloc. */
+#define ALLOCATION_AMOUNT 20000
+
+/** Amount of lines to be reallocate by realloc. 
+ *  Keep in mind realloc is costly, so it's suggest
+ *  that you use big numbers.
+ */
+#define REALLOCATION_AMOUNT 20000
 
 /*
     A dictionary struct.
@@ -32,14 +42,12 @@ void open_file (FILE **file_pointer);
 /** 
  * Function to dinamicly allocate a dictionary.
  * It receives a dictionary address by reference (&dict).
- * The allocation is done for 20000 words.
  */ 
 void dict_allocation (dictionary *dict_pointer);
 
 /**
  * Function to dinamicly reallocate a dictionary.
  * It receives a dictionary address by reference (&dict).
- * The reallocation is done for 20000 words.
  */ 
 void dict_reallocation (dictionary *dict_pointer);
 
@@ -77,7 +85,7 @@ int is_character (unsigned char value);
  * Second param is a string.
  * Third param is the string's size by copy.
  */
-int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int tam);
+int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int s_size);
 
 /**
  * Function to lower case a string

@@ -11,23 +11,24 @@
 #ifndef _dicionario_
 #define _dicionario_
 
-/** Path to the system dictionary to be used as the main dict. */
+/** Path to the system file to be used as the main dict. */
 #define BRAZILIAN_DICT_ABSOLUTE_PATH "/usr/share/dict/brazilian"
 
 /** Amount of lines to be allocate by malloc. */
 #define ALLOCATION_AMOUNT 20000
 
-/** Amount of lines to be reallocate by realloc. 
+/**
+ *  Amount of lines to be reallocate by realloc. 
  *  Keep in mind realloc is costly, so it's suggest
  *  that you use big numbers.
  */
 #define REALLOCATION_AMOUNT 20000
 
-/*
-    A dictionary struct.
-    The unsigned char matrix is the proper dictionary.
-    The lines is the number of lines this dictionary has.
-*/
+/**
+ *  A dictionary struct.
+ *  The unsigned char matrix is the proper dictionary.
+ *  The lines is the number of lines this dictionary has.
+ */
 typedef struct s_dict {
     unsigned char **dict;
     int lines;

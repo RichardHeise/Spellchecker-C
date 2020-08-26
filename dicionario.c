@@ -11,8 +11,12 @@ void open_file (FILE **file_pointer) {
     (*file_pointer) = fopen(BRAZILIAN_DICT_ABSOLUTE_PATH, "r");
 
     if (!(*file_pointer)) {
-        printf("Error: couldn't open file.");
-        exit(-1);
+        (*file_pointer) = fopen("brazilian", "r");
+
+        if (!(*file_pointer)) {
+            perror("Error: couldn't open file.");
+            exit(-1);
+        }
     }
 }
 
@@ -21,7 +25,7 @@ void dict_allocation (dictionary *dict_pointer) {
     // Allocates a defined amount of lines lines.
     dict_pointer->dict = (unsigned char **)malloc(ALLOCATION_AMOUNT * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
-        printf("Error: couldn't allocate memory.");
+        perror("Error: couldn't allocate memory.");
         exit(-2);
     }
 
@@ -32,7 +36,7 @@ void dict_allocation (dictionary *dict_pointer) {
 
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
-            printf("Error: couldn't allocate memory.");
+            perror("Error: couldn't allocate memory.");
             exit(-2);
         }
     }
@@ -43,7 +47,7 @@ void dict_reallocation (dictionary *dict_pointer) {
     // Increases the maximum amount of lines by 20000
     dict_pointer->dict = realloc(dict_pointer->dict, (REALLOCATION_AMOUNT + dict_pointer->lines) * sizeof(unsigned char *));
     if (dict_pointer->dict == NULL) {
-        printf("Error: couldn't allocate memory.");
+        perror("Error: couldn't allocate memory.");
         exit(-2);
     }
 
@@ -51,7 +55,7 @@ void dict_reallocation (dictionary *dict_pointer) {
     for (i = dict_pointer->lines; i < (REALLOCATION_AMOUNT + dict_pointer->lines); i++) {
         dict_pointer->dict[i] = (unsigned char *)malloc(sizeof(unsigned char));
         if (dict_pointer->dict == NULL) {
-            printf("Error: couldn't allocate memory.");
+            perror("Error: couldn't allocate memory.");
             exit(-2);
         }
     }

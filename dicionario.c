@@ -5,6 +5,7 @@
 
 #include "dicionario.h"
 
+//=============================================================//
 void open_file (FILE **file_pointer) {
 
     // Open a file in read mode
@@ -20,6 +21,7 @@ void open_file (FILE **file_pointer) {
     }
 }
 
+//=============================================================//
 void dict_allocation (dictionary *dict_pointer) {
 
     // Allocates a defined amount of lines lines.
@@ -42,6 +44,7 @@ void dict_allocation (dictionary *dict_pointer) {
     }
 }
 
+//=============================================================//
 void dict_reallocation (dictionary *dict_pointer) {
 
     // Increases the maximum amount of lines by 20000
@@ -61,6 +64,7 @@ void dict_reallocation (dictionary *dict_pointer) {
     }
 }
 
+//=============================================================//
 void free_dict (dictionary *dict_pointer) {
     int i;
     for (i = 0; i < dict_pointer->lines; i++) {
@@ -71,6 +75,7 @@ void free_dict (dictionary *dict_pointer) {
     dict_pointer->dict = NULL;
 }
 
+//=============================================================//
 unsigned char lower_case (unsigned char value) {
     // Char values based on ISO-8859-1 table
     // "Hardcoded" so it's less buggy
@@ -86,14 +91,15 @@ unsigned char lower_case (unsigned char value) {
 
 }
 
-void lower_string (unsigned char **value) {
+//=============================================================//
+void lower_string (unsigned char **string) {
     int i;
-    for (i = 0; (*value)[i] != '\0'; i++) {
-        (*value)[i] = lower_case((*value)[i]);
+    for (i = 0; (*string)[i] != '\0'; i++) {
+        (*string)[i] = lower_case((*string)[i]);
     }
-    return;
 }
 
+//=============================================================//
 static int compare_strs (const void* str_a, const void* str_b ) {
     const char *pointer_a = *(const char**)str_a;
     const char *pointer_b = *(const char**)str_b;
@@ -101,6 +107,7 @@ static int compare_strs (const void* str_a, const void* str_b ) {
     return strcmp(pointer_a,pointer_b);
 }
 
+//=============================================================//
 void load_dict (FILE **file_pointer, dictionary *dict_pointer) {
 
     int i;
@@ -126,11 +133,13 @@ void load_dict (FILE **file_pointer, dictionary *dict_pointer) {
     fclose((*file_pointer));
 }
 
+//=============================================================//
 void start_dict (dictionary *dict_pointer) {
     dict_pointer->lines = 0;
     dict_allocation(dict_pointer);
 }
 
+//=============================================================//
 int is_character (unsigned char value) {
     value = lower_case(value);
     if ((value >=  97 && value <= 122) ||
@@ -145,6 +154,7 @@ int is_character (unsigned char value) {
     return 0;
 }
 
+//=============================================================//
 int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int s_size) {
     int start = 0;
     int end = dict_pointer->lines-1;

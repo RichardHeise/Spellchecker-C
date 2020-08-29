@@ -14,6 +14,9 @@
 /** Path to the system file to be used as the main dict. */
 #define BRAZILIAN_DICT_ABSOLUTE_PATH "/usr/share/dict/brazilian"
 
+/** Locale that the code will use to interpret the dictionary. */
+#define LOCALE "pt_BR.iso88591"
+
 /** Amount of lines to be allocate by malloc. */
 #define ALLOCATION_AMOUNT 20000
 
@@ -96,6 +99,10 @@ int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int s_size)
  */
 void lower_string (unsigned char **value);
 
+/**
+ * Function to free the dictionary pointers
+ * Receives a dictionary struct to be freed.
+ */
 void free_dict (dictionary *dict_pointer);
 
 #endif

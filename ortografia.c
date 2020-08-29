@@ -7,8 +7,13 @@
 
 int main () {
 
+    if (! setlocale(LC_CTYPE, LOCALE)) {
+        printf("Couldn't set the program locale to %s \n", LOCALE);
+        exit(-3);
+    }
+
     // we gonna work with this dictionary in ISO-8859-1
-    setlocale(LC_CTYPE, "pt_BR.iso88591");
+    setlocale(LC_CTYPE, LOCALE);
     
     // Pointer to a file and declaration of a dict variable
     FILE *arq;

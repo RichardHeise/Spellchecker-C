@@ -67,8 +67,8 @@ void free_dict (dictionary *dict_pointer) {
         free(dict_pointer->dict[i]);
         dict_pointer->dict[i] = NULL;
     }
-    // free(dict_pointer);
-    dict_pointer = NULL;
+    free(dict_pointer->dict);
+    dict_pointer->dict = NULL;
 }
 
 unsigned char lower_case (unsigned char value) {

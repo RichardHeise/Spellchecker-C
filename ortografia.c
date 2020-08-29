@@ -46,6 +46,8 @@ int main () {
         }
     }
 
+    free_dict(&pt_dict);
+
     printf("\n");
     return 1;
 }

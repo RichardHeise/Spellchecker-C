@@ -96,4 +96,6 @@ int dict_binary_search(dictionary *dict_pointer, unsigned char *str, int s_size)
  */
 void lower_string (unsigned char **value);
 
+void free_dict (dictionary *dict_pointer);
+
 #endif

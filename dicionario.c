@@ -61,6 +61,16 @@ void dict_reallocation (dictionary *dict_pointer) {
     }
 }
 
+void free_dict (dictionary *dict_pointer) {
+    int i;
+    for (i = 0; i < dict_pointer->lines; i++) {
+        free(dict_pointer->dict[i]);
+        dict_pointer->dict[i] = NULL;
+    }
+    // free(dict_pointer);
+    dict_pointer = NULL;
+}
+
 unsigned char lower_case (unsigned char value) {
     // Char values based on ISO-8859-1 table
     // "Hardcoded" so it's less buggy
